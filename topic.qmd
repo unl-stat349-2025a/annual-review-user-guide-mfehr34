@@ -1,0 +1,6 @@
+# Topic
+
+Pick some subset of the information covered in your annual review article that you are interested in exploring in more detail. 
+
+Identify the scope of your user guide - what will you cover? Specific software packages? When to use or not to use a specific technique?
+

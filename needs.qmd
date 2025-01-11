@@ -1,0 +1,9 @@
+# Needs Assessment {.appendix}
+
+What does someone trying to accomplish your chosen task need help with? 
+
+What parts are likely to be tricky? 
+
+What resources are already available on this topic that may be helpful? Look for e.g. software vignettes, package documentation, papers about software packages, and so on.
+
+

@@ -1,6 +1,6 @@
 # Topic
 
-Pick some subset of the information covered in your annual review article that you are interested in exploring in more detail. 
+My article discusses data analysis as a major part of the Data Science Process. In particular, it references data cleaning numerous times and the steps that are involved in a simple data cleaning: load data from a csv, drop rows with null values, and converting text into numeric values.
 
-Identify the scope of your user guide - what will you cover? Specific software packages? When to use or not to use a specific technique?
+The article uses R to describe this process, so my user guide will be simple data cleaning in R. The packages I will use are dplyr and tidyr. I have never actually done data cleaning in R (only in Python), so it will be a learning experience for myself, as well. I may add more steps/packages as I go.
 

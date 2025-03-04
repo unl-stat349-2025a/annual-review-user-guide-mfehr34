@@ -1,27 +1,49 @@
 
 # Task Analysis {.appendix}
 
-Here are some questions to guide you through the process of doing a task analysis. You don't have to specifically answer each one of these (and some may not apply), but they should get you started thinking in the right direction. 
+## Prerequisites
 
-What are the prerequisites, for both knowledge and e.g. software setup? 
+The most basic prerequisite for this user guide is having R and RStudio installed on a computer. The user will also need a properly formatted csv file stored in a folder. Other useful knowledge includes:
 
-What are the basic requirements for any data that the method is used on? 
-  - Are missing values allowed? 
-  - Should the data be confined within a certain range? 
-  - Does the data have to be approximately normally distributed? 
+- very very basic R (how to create a new file, run commands, etc.)
+- an understanding of the structure of dataframes
+- an understanding of basic data types (string, integer, float) and numerical vs categorical variables
 
-What are the basic components of the task?
-  - Outline these in a bit more detail
+## Data Requirements
 
+There are no basic data requirements beyond being stored in csv format. The point of this user guide is to clean up messy data.
 
-What decisions does the user need to be prepared to make on the fly?
+## Basic Components of the Task 
 
-What questions should the user ask of the "first draft" of the product? What adjustments may need to be made?
+1. **Import data into RStudio**
+  a. Change the working directory to the folder that stores the data 
+  b. Use read.csv to store data in a variable
+  c. Take a peek at the first few rows of the df to make sure it worked
+  
+2. **Remove duplicates**
+  a. Locate the duplicate rows
+  b. Drop the duplicate rows
+  
+3. **Change columns to the correct data type**
+  a. Identify the data types of each column
+  b. Decide which column types need to be changed (categorical vs numerical)
+  c. Change the identified columns to the correct data type
+  
+4. **Identify and correct missing values**
+  a. Locate the columns containing missing values
+  b. **(Option 1) Imputing Missing Values:**
+    (1) Calculate the mean/mode for each column that has missing values.
+    (2) Change the missing values in each column to its respective mean/mode.
+  c. **(Option 2) Dropping Missing Values:**
+    (1) Drop the rows that have missing values in the identified columns.
 
+## User Decisions
 
-## Additional Guidance 
+There are two decisions that the user will have to make for themselves. First, they need to decide which columns are of the wrong data type and what they should be changed to. Second, they will have to decide whether rows with missing values can be dropped or if they should be kept, imputing the missing values.
 
-Your check-in should answer these basic questions (and similar concerns that apply more directly to your topic). 
+## Quality Checks After Task is Completed
 
-Once you've completed the check-in, you can use this section to jump-start an introduction/set-up/getting started section in your user guide. 
-This document should remain as an appendix to your main report. 
+- **Check that the shape of the dataframe is roughly the same**. Or if many rows were dropped, make sure that the new shape is reasonable. If there are too few rows, go back and impute the missing values instead.
+- **Do the imputed values look correct?** Are the means/modes reasonable in the context of the data?
+- **Confirm that the data types of each column are correct.**
+- **Confirm that there are no duplicate rows anymore.**

@@ -1,9 +1,19 @@
 # Needs Assessment {.appendix}
 
-What does someone trying to accomplish your chosen task need help with? 
+The main audience for this user guide is someone looking to import data into R and perform a basic data cleaning to prepare semi-messy data for analysis. Some problems with their messy data may be duplicate values, missing values, and incorrect data types.
 
-What parts are likely to be tricky? 
+Some parts that I anticipate might be challenging are:
 
-What resources are already available on this topic that may be helpful? Look for e.g. software vignettes, package documentation, papers about software packages, and so on.
+- Downloading R and RStudio (if needed)
+- Importing data into R
+- Imputing missing values (or dropping rows with null values)
+- Converting columns from one data type to another
+
+Other resources on this topic that might be helpful:
+
+- [tidyr website/documentation](https://tidyr.tidyverse.org/)
+- [dplyr website/documentation](https://dplyr.tidyverse.org/)
+- [article on data cleaning](https://www.geeksforgeeks.org/data-cleaning-in-r/)
+- [R resources for beginners](https://education.rstudio.com/learn/beginner/)
 
 

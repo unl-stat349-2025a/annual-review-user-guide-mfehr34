@@ -9,11 +9,11 @@ from: markdown+emoji
 
 book:
   title: "User Guide: Annual Review Article Topic"
-  author: "Author Name"
+  author: "Mitchell Fehr"
   page-footer:
-    left: "Copyright 2025, Author Name"
+    left: "Copyright 2025, Mitchell Fehr"
   chapters:
-    - index.qmd # Remove this before you submit your final report!
+    - index.qmd
     - guide.qmd
     - references.qmd
   appendices:
@@ -26,7 +26,7 @@ bibliography: references.bib
 format:
   html:
     highlight-style: a11y
-    theme: cosmo
+    theme: minty
     code-copy: true
   pdf:
     documentclass: scrreprt

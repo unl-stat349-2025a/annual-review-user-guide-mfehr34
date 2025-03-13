@@ -1,5 +1,218 @@
-# User Guide
+# Data Cleaning in R {.unnumbered}
 
-First off, you should change this section title to something more appropriate.
+## Introduction
 
-Next, well, that's up to you. Good luck!
+In a perfect world, data would always be well structured, easy to use, and have no faults. Unfortunately, this isn't a perfect world---the majority of datasets contain discrepancies that impact the accuracy of insights extracted from them. For this reason, data cleaning is a vital step when doing any sort of data-driven process. To obtain reliable results from an analysis, these discrepancies need to be evaluated and dealt with (unless they are relevant to the analysis). Although data cleaning may not be the most intriguing part of the data process, it lays the foundation for accurate visualizations and reliable analyses. By mastering these steps, you will set yourself up for success in the exciting future of data!
+
+One of the most common ways to organize data is in a tabular format, where each row represents an instance and each column represents a feature of that instance. This user guide will walk you through a simple data cleaning process using this format of data, also known as a dataframe. Specifically, it focuses on three recurring data issues: duplicate records, incorrect data types, and missing values. By the end of this user guide, you will be able to fix each of these problems, allowing you to draw valuable insights from your data. The data cleaning workflow is represented in this diagram.
+
+![](images/DataCleaningWorkflow2.png){fig-align="center"}
+
+This user guide utilizes the R programming language (v4.3.1) and the popular RStudio IDE (Integrated Development Environment). These software are what make a *simple* data cleaning possible. With R's powerful packages and RStudio's friendly interface, this process is easier than ever.
+
+## Prerequisites
+
+The first prerequisite for this guide is having R and RStudio installed on a PC or laptop. If you do not have both installed, click this [link](https://rstudio-education.github.io/hopr/starting.html) for a simple walk-through of the installation.
+
+The next prerequisite is a basic understanding of the R programming language and RStudio. Knowing how to create a new R script file, run lines of code, and where the output is generated will make this walk-trhough go smoothly.
+
+The final prerequisite for this guide is having a dataset structured in a tabular format the first row being column names. This includes the following file formats:
+
+-   comma-separated values (CSV) files
+
+-   tab-separated values (TSV) files
+
+-   other delimited file formats
+
+-   fixed-width files
+
+-   whitespace-separated files
+
+This data file needs to be stored in a folder on the computer being used. In addition to simply having a data set, you will also need a basic understanding of your data. For example, be familiar with each feature and what data type it should be.
+
+## Packages
+
+The first R package that this data cleaning process uses is the **Tidyverse** package. The version it uses is Tidyverse 2.0.0. This package is used for a variety of uses and is made up by multiple more specific packages: dplyr, tidyr, readr, purrr, tibble, stringr, forcats, and lubridate. This user guide uses the **readr** package for importing data and the **dplyr** package for dealing with missing values.
+
+The other R package that is used in this process is the **DescTools** package. The version it uses is DescTools 0.99.59. The DescTools package is a collection of basic statistics functions designed for descriptive statistics. This user guide utilizes the `Mode()` function for imputing missing values.
+
+## Instructions
+
+[*Note:*]{.underline} If you run into any errors during this process, please refer to the [Common Errors (and Fixes)](#common-errors-and-fixes) section. I have included fixes for errors that I anticipate might occur in each step.
+
+### Step 0 - Setting Up Your RStudio Environment {.unnumbered}
+
+1.  Open the RStudio application.
+2.  Create a new R script file or open an existing one.
+3.  Install and import the **tidyverse** library.
+    a.  If you have previously installed and used tidyverse, skip to part b. If you haven't, navigate to the console pane, then type this line of code: `install.packages("tidyverse")` and press Enter.
+    b.  Import the tidyverse library by typing and executing the following line of code in your current session: `library(tidyverse)`.
+4.  Install and import the **DescTools** library (for Step 4).
+    a.  If you have previously installed and used DescTools, skip to part b. If you haven't, navigate to the console pane, then type this line of code: `install.packages("DescTools")` and press Enter.
+    b.  Import the DescTools library by typing and executing the following line of code in your current session: `library(DescTools)`.
+
+### Step 1 - Importing Your Data {.unnumbered}
+
+1.  Set the working directory to the folder where your data file is stored. To do this, in the top navigation panel, select **Session -\> Set Working Directory -\> Choose Directory.** In the pop-up window, select the appropriate folder.
+2.  Read in the data using the *readr* package and store it in a variable. The line of code that you use depends on your file type.
+    -   If your data is in a .csv file, then type and execute this line of code in your current session: `df <- read_csv("your_file.csv")`. Inside the quotation marks, put the name of your data file (leave in the csv file extension). You can change the variable name `df` to whatever you would like, but this guide assumes your data is stored in `df` for subsequent steps.
+        -   To find out more about the `read_csv()` function and its parameters, type `?read_csv` into the console and press Enter. More information will pop up in the Help pane. This also works similarly for the other *readr* functions discussed next.
+    -   If your data isn't in a .csv file, replace `read_csv` from the previous example with one of these similar functions:
+        -   `read_tsv()`: for tab-separated values
+        -   `read_delim()`: for other delimited files (not using tab or comma as the delimiter)
+        -   `read_fwf()`: for fixed-width files
+        -   `read_table()`: for whitespace-separated files
+3.  Type and execute the following line of code: `head(df)`. After execution, the first six rows of your data should appear in the console pane. Ensure that the data was read in correctly (i.e. column names are correct, values are as expected).
+
+### Step 2 - Removing Duplicates {.unnumbered}
+
+[*Note:*]{.underline} *Before starting this step, know that having duplicates isn't always a problem in data sets, but it often is considered to be. Make sure to carefully consider whether duplicates are natural or beneficial in your data before discarding them.*
+
+1.  Find all duplicate rows by typing and executing the following line of code in your current session: `duplicates <- df[duplicated(df),]`.
+2.  To view these duplicates, simply type `duplicates` and execute this code. It is important to view the duplicate rows so that you know what you are dropping from you data set. If no rows show up, there are no duplicates and you can go to **Step 3**!
+3.  Get rid of the duplicate rows by typing and executing this line of code: `df <- distinct(df)`.
+
+### Step 3 - Changing Column Data Types {.unnumbered}
+
+The `read` functions we used will automatically infer the data types of each column in your data. However, they don't always infer correctly. This step aims to fix that problem.
+
+Some common data types are:
+
+-   character (`chr`) for words/strings
+-   integer (`int`) for integers
+-   double (`dbl`) for decimal numbers
+-   Date (`date`) for dates
+-   logical (`lgl`) for true/false values
+-   factor (`fct`) for categorical variables that have a restricted number of distinct values
+
+A full list of column types can be found at this [link](https://cran.r-project.org/web/packages/tibble/vignettes/types.html).
+
+1.  To view the data types of each column, type in and execute this line of code: `head(df)`. Output similar to the image below should pop up. The data types for each column are highlighted in green. If all of your data types are correct for their corresponding columns, you can skip to **Step 4**! If not, continue to the next step.
+
+    ![](images/Screenshot%202025-03-12%20081604.png)
+
+    -   If it's easier to look at each column's type individually, type and execute the following line of code where `column` is the column's name: `typeof(df$column)`.
+
+2.  To change a column from one data type to another, the following functions can be used corresponding to the data types mentioned above: `as.character()`, `as.integer()`, `as.double()`, `as.Date()`, `as.logical()`, `as.factor()`. For each function, the column is passed as an argument inside the parentheses, formatted as `df$column`. To successfully change a column type in your data, you will need to assign the returned value of the function to the column by typing `df$column <-` before the function.
+
+    -   An example of this converting the column `GDPRank` to type `dbl` is:
+
+        -   `df$GDPRank <- as.double(df$GDPRank)`
+
+    -   This process can be repeated as many times as needed, depending on how many columns are the wrong data type. Each type change should be a new line of code following the same process as the example.
+
+    -   When you are done, execute `head(df)` again to ensure that the column types changed correctly.
+
+### Step 4 - Correcting Missing Values {.unnumbered}
+
+There are four main options for dealing with missing values: **leaving them untouched**, **dropping columns**, **dropping rows**, and **imputing them**. The first option is simple enough; if missing values may be beneficial to a model or for future insights, don't hesitate to leave them in. As for the other options:
+
+-   If your data has a specific column(s) with a large number of missing values, then you might consider dropping that column(s).
+
+-   If your data has few missing values, then you might consider dropping rows with missing values.
+
+-   If your data has many columns with lots of missing values *or* dropping rows would greatly reduce the size of the data set, then you might consider imputing values.
+
+It is important to decide which option is best for your specific data set before getting rid of any data. Knowing the number of missing values in each column can help with that decision. To take a peek at the number of missing values in each column, type and execute the following line of code: `colSums(is.na(df))`. Output like the image below should appear in the console with the number of missing values below each column's name.
+
+![](images/Screenshot%202025-03-12%20165337.png){fig-align="left" width="644" height="35"}
+
+It might also be beneficial to combine the options, instead of using just one. However, be aware that once you drop all rows with missing values, the other options will no longer be viable. After you have carefully analyzed your options, proceed.
+
+A.  **Dropping columns with missing values**
+
+    1.  Type and execute the following line of code: `df <- select(df, -column)`. Swap out `column` with the name of the column you are dropping. Make sure to keep the `-` operator which tells R that you want all columns except for the specified one.
+
+B.  **Dropping rows with missing values**
+
+    1.  Type and execute the following line of code: `df <- na.omit(df)`.
+
+C.  **Imputing missing values**
+
+    a.  If the column you are imputing is of a numeric type (integer, double, etc.), then missing values will be replaced with the mean of that column.
+        1.  First, calculate the mean of the column by typing and executing the following line of code: `mean <- mean(df$column, na.rm = TRUE)` where `column` is the name of the column you are imputing. The `na.rm` parameter specifies that we want missing values to be removed from the calculation.
+        2.  Next type and execute the following line of code: `df <- mutate(df, column = ifelse(is.na(column), mean, column))`. Again, change `column` to your column's name. The `ifelse()` function checks whether each value in the column is missing and, if it is, the value is changed to `mean`. If it isn't missing, the value remains unchanged.
+    b.  If the column you are imputing is of another type (character, Date, etc.), then missing values will be replaced with the most frequent value.
+        1.  First, calculate the most frequent value by typing and executing the following line of code: `mfv <- Mode(df$column, na.rm = TRUE)` where `column` is the name of the column you are imputing. Make sure `Mode` is capitalized! The `na.rm` parameter specifies that we want missing values to be removed from the calculation.
+
+        2.  Next type and execute the following line of code: `df <- mutate(df, column = ifelse(is.na(column), mfv, column))`. Again, change `column` to your column's name. The `ifelse()` function checks whether each value in the column is missing and, if it is, the value is changed to `mfv`. If it isn't missing, the value remains unchanged.
+    c.  An example of imputing the `Population` column (type `dbl`) is:
+        1.  `mean <- mean(df$Population, na.rm = TRUE)`
+        2.  `df <- mutate(df, Population = ifelse(is.na(Population), mean, Population))`
+
+If you chose to drop missing values, execute `colSums(is.na(df))` again to ensure that this step was successful.
+
+## Common Errors (and Fixes)
+
+-   **Step 0**
+
+    -   \**Error 1\** - If the packages are causing errors, make sure you install the packages using `install.packages()` *before* importing the library in your current session.
+
+-   **Step 1**
+
+    -   *\*Error 1*\* - If the system can't find your file, make sure that you set the working directory in RStudio to the folder where your file is located. Also, make sure that the file name matches exactly including the file extension.
+
+    -   *\*Error 2*\* - If the column names are not correct, ensure that your data file is set up properly with column names as the first line. See the below example for a csv file.
+
+        ![](images/Screenshot%202025-03-12%20204706-01.png){width="485"}
+
+    -   *\*Error 3*\* - If the data values are being imported incorrectly, ensure that you are using the correct `read` function for the type of data file you have. The most important aspect is the delimiter.
+
+-   **Step 2**
+
+    -   *\*Error 1*\* - If no duplicates show up or no rows get dropped, then there are no duplicates!
+
+-   **Step 3**
+
+    -   *\*Error 1*\* - If you try converting a character with non-numeric values (i.e. string) to a numeric column type, the whole row will turn into NA (missing) values. **Only convert numeric columns to other numeric data types**. On the contrary, you *can* convert numeric columns (or any column) to character columns.
+
+-   **Step 4**
+
+    -   \**Error 1*\* - If any fuctions aren't being recognized, ensure that all packages are installed and imported from Step 0.
+
+    -   *\*Error 2*\* - If you are getting errors with the `mean` function, make sure that the column you are calculating the mean of is a numeric column.
+
+## Conclusion {#common-errors-and-fixes}
+
+Now that you've reached the end of this guide, your data should be significantly cleaner with fewer discrepancies. We walked through a simple data cleaning by importing data, removing duplicates, adjusting column types, and handling missing values. While there may still be additional steps needed to fully prepare your data for analysis, this guide aimed to give you a solid foundation in essential data cleaning steps.
+
+An effective data cleaning dramatically improves the quality of your analysis and the reliability of the insights you gain. Developing a nice routine will save you time and effort down the road. As you master this workflow, consider exploring more advanced techniques like outlier detection, data standardization, and other data imputation methods.
+
+If you're ready to dive into the next steps in the process, follow the links in the Additional Resources section below.
+
+Happy data cleaning!
+
+## Additional Resources
+
+-   [Getting R and RStudio setup](https://rstudio-education.github.io/hopr/starting.html)
+
+-   More information on the packages used:
+
+    -   [Tidyverse](https://www.tidyverse.org/packages/) (includes links to related packages)
+    -   [DescTools](https://www.rdocumentation.org/packages/DescTools/versions/0.99.58)
+
+-   [Column data types](https://cran.r-project.org/web/packages/tibble/vignettes/types.html)
+
+-   More data cleaning help:
+
+    -   [More fundamental techniques](https://albert-rapp.de/posts/24_data_cleaning_fundamentals/24_data_cleaning_fundamentals.html)
+
+    -   [More advanced techniques](https://citedrive.medium.com/top-data-wrangling-and-data-cleaning-packages-for-r-in-2023-a-comprehensive-guide-194de0cc0aa6)
+
+## References
+
+@grolemundInstallingRStudioHandsOn
+
+@TidyversePackages
+
+@DplyrGrammarData
+
+@ReadrReadRectangular
+
+@DescToolsPackageRDocumentation
+
+@ColumnTypes
+
+@rapp6MostFundamental2024
+
+@citedriveTopDataWrangling2023

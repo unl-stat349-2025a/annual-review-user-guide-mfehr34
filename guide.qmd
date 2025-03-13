@@ -14,7 +14,7 @@ This user guide utilizes the R programming language (v4.3.1) and the popular RSt
 
 The first prerequisite for this guide is having R and RStudio installed on a PC or laptop. If you do not have both installed, click this [link](https://rstudio-education.github.io/hopr/starting.html) for a simple walk-through of the installation.
 
-The next prerequisite is a basic understanding of the R programming language and RStudio. Knowing how to create a new R script file, run lines of code, and where the output is generated will make this walk-trhough go smoothly.
+The next prerequisite is a basic understanding of the R programming language and RStudio. Knowing how to create a new R script file, run lines of code, and where the output is generated will make this walk-through go smoothly.
 
 The final prerequisite for this guide is having a dataset structured in a tabular format the first row being column names. This includes the following file formats:
 
@@ -44,10 +44,10 @@ The other R package that is used in this process is the **DescTools** package. T
 
 1.  Open the RStudio application.
 2.  Create a new R script file or open an existing one.
-3.  Install and import the **tidyverse** library.
+3.  Install and import the **Tidyverse** library.
     a.  If you have previously installed and used tidyverse, skip to part b. If you haven't, navigate to the console pane, then type this line of code: `install.packages("tidyverse")` and press Enter.
     b.  Import the tidyverse library by typing and executing the following line of code in your current session: `library(tidyverse)`.
-4.  Install and import the **DescTools** library (for Step 4).
+4.  Install and import the **DescTools** library.
     a.  If you have previously installed and used DescTools, skip to part b. If you haven't, navigate to the console pane, then type this line of code: `install.packages("DescTools")` and press Enter.
     b.  Import the DescTools library by typing and executing the following line of code in your current session: `library(DescTools)`.
 
@@ -142,7 +142,7 @@ C.  **Imputing missing values**
 
 If you chose to drop missing values, execute `colSums(is.na(df))` again to ensure that this step was successful.
 
-## Common Errors (and Fixes)
+## Common Errors (and Fixes) {#common-errors-and-fixes}
 
 -   **Step 0**
 
@@ -172,7 +172,7 @@ If you chose to drop missing values, execute `colSums(is.na(df))` again to ensur
 
     -   *\*Error 2*\* - If you are getting errors with the `mean` function, make sure that the column you are calculating the mean of is a numeric column.
 
-## Conclusion {#common-errors-and-fixes}
+## Conclusion
 
 Now that you've reached the end of this guide, your data should be significantly cleaner with fewer discrepancies. We walked through a simple data cleaning by importing data, removing duplicates, adjusting column types, and handling missing values. While there may still be additional steps needed to fully prepare your data for analysis, this guide aimed to give you a solid foundation in essential data cleaning steps.
 

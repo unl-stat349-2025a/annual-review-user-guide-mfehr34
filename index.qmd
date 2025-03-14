@@ -1,5 +1,5 @@
 # Welcome {.unnumbered}
 
-Thanks for checking out my user guide on cleaning up messy data! Data cleaning is a super important skill for anyone that deals with data, meaning *everyone* in 2025. To get started, click [here](guide.qmd).
+Thanks for checking out my user guide on cleaning up messy data! Data cleaning is an essential skill for anyone that deals with data, which is pretty much *everyone* in 2025. To get started, click [here](guide.qmd).
 
 ![@grufoDataIcon2023](images/DataFileIcon.png){fig-align="center" width="279"}
